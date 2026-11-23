@@ -5,7 +5,7 @@ export default function Cabecalho({ titulo, raiz, onMenu, onVoltar, onBusca, vol
   return (
     <header className="topo">
       {raiz ? (
-        <button className="icone-btn" onClick={onMenu} aria-label="Abrir menu">
+        <button className="icone-btn so-mobile" onClick={onMenu} aria-label="Abrir menu">
           <Icone d={IC.menu} tamanho={24} />
           {temNovidade && <span className="ponto" aria-hidden="true" />}
         </button>

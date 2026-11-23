@@ -8,6 +8,7 @@ export default function TelaDetalhes({ vaga, aluno, salva, candidatura, onVoltar
   const d = vaga.diasRestantes();
   return (
     <>
+      <div className="det-grid">
       <section className="card det-topo">
         <Logo vaga={vaga} grande />
         <h1>{vaga.titulo}</h1>
@@ -30,7 +31,7 @@ export default function TelaDetalhes({ vaga, aluno, salva, candidatura, onVoltar
           : `Esta vaga exige o ${vaga.periodoMinimo}º período e você está no ${aluno.periodo}º. Salve a vaga para acompanhar outras oportunidades da empresa.`}
       </p>
 
-      <section className="card">
+      <section className="card det-info">
         <dl className="info-grid">
           <div><dt>Modalidade</dt><dd>{vaga.modalidade}</dd></div>
           <div><dt>Bolsa</dt><dd>{vaga.bolsa}</dd></div>
@@ -39,7 +40,7 @@ export default function TelaDetalhes({ vaga, aluno, salva, candidatura, onVoltar
         </dl>
       </section>
 
-      <section className="card texto">
+      <section className="card texto det-texto">
         <h2>Sobre a vaga</h2>
         <p>{vaga.descricao}</p>
         <h2>Requisitos</h2>
@@ -47,6 +48,7 @@ export default function TelaDetalhes({ vaga, aluno, salva, candidatura, onVoltar
         <h2>Cursos aceitos</h2>
         <div className="tags">{vaga.cursos.map(c => <span key={c} className="tag">{c}</span>)}</div>
       </section>
+      </div>
 
       <div className="barra-acao">
         <button className={'btn-icone-borda' + (salva ? ' ativo' : '')} onClick={() => onSalvar(vaga)}

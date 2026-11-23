@@ -5,7 +5,7 @@ import { fmtData, diasDe } from '../utils/datas';
 // Tela 1: Avisos (início)
 export default function TelaInicio({ aluno, novas, avisos, onMural }) {
   return (
-    <>
+    <div className="inicio">
       <section className="card saudacao">
         <h1>Olá, {aluno.nome}!</h1>
         {avisos.length > 0 ? (
@@ -32,6 +32,7 @@ export default function TelaInicio({ aluno, novas, avisos, onMural }) {
         <Icone d={IC.direita} />
       </button>
 
+      <div className="discs">
       {DISCIPLINAS.map(d => (
         <article key={d.codigo} className="card disc">
           {d.prova && <span className="pill-prova">Prova: {fmtData(d.prova)}</span>}
@@ -43,6 +44,7 @@ export default function TelaInicio({ aluno, novas, avisos, onMural }) {
           </div>
         </article>
       ))}
+      </div>
 
       <article className="card noticia">
         <div className="noticia-img" aria-hidden="true" />
@@ -52,6 +54,6 @@ export default function TelaInicio({ aluno, novas, avisos, onMural }) {
           <span className="noticia-data"><Icone d={IC.calendario} tamanho={15} />{fmtData(diasDe(12))} às 14:00, Ginásio do Inatel</span>
         </div>
       </article>
-    </>
+    </div>
   );
 }

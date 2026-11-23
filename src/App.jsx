@@ -4,7 +4,7 @@ import { CHAVE, estadoInicial, carregar, persistir } from './data/armazenamento'
 import { FILTROS_VAZIOS } from './utils/filtros';
 import { IC } from './components/Icone';
 import Cabecalho from './components/Cabecalho';
-import Menu from './components/Menu';
+import Menu, { MenuConteudo } from './components/Menu';
 import PainelFiltros from './components/PainelFiltros';
 import Dialogo from './components/Dialogo';
 import Toast from './components/Toast';
@@ -156,6 +156,8 @@ export default function App() {
       conteudo = null;
   }
   const comBarra = atual.tela === 'detalhes' || atual.tela === 'enviar';
+  // Item do menu destacado: as telas do fluxo de candidatura pertencem ao Mural
+  const secaoMenu = { detalhes: 'mural', enviar: 'mural', sucesso: 'mural' }[atual.tela] || atual.tela;
   const TITULOS = { inicio: 'Avisos', mural: 'Mural de Estágios', detalhes: 'Detalhes da vaga', enviar: 'Enviar candidatura', sucesso: 'Candidatura enviada', minhas: 'Minhas candidaturas' };
   const buscar = () => {
     if (atual.tela === 'mural') { const el = document.querySelector('.busca input'); if (el) el.focus(); }
@@ -166,10 +168,15 @@ export default function App() {
     <div className="app">
       <Cabecalho titulo={TITULOS[atual.tela]} raiz={pilha.length === 1} temNovidade={novas > 0}
         onMenu={() => setMenuAberto(true)} onVoltar={voltar} onBusca={buscar} voltarBloqueado={bloqueado} />
-      <main key={pilha.length + atual.tela + (atual.id || '')} className={'tela' + (comBarra ? ' com-barra' : '')}>
-        {conteudo}
-      </main>
-      {menuAberto && <Menu aluno={ALUNO} novas={novas} telaAtual={atual.tela} onFechar={() => setMenuAberto(false)}
+      <div className="corpo">
+        <nav className="lateral" aria-label="Menu principal">
+          <MenuConteudo aluno={ALUNO} novas={novas} telaAtual={secaoMenu} onNavegar={navegarMenu} onReiniciar={reiniciar} />
+        </nav>
+        <main key={pilha.length + atual.tela + (atual.id || '')} className={`tela tela-${atual.tela}` + (comBarra ? ' com-barra' : '')}>
+          <div className="conteudo">{conteudo}</div>
+        </main>
+      </div>
+      {menuAberto && <Menu aluno={ALUNO} novas={novas} telaAtual={secaoMenu} onFechar={() => setMenuAberto(false)}
         onNavegar={navegarMenu} onReiniciar={reiniciar} />}
       {filtrosAbertos && <PainelFiltros inicial={filtros} aluno={ALUNO} contar={f => MURAL.filtrarVagas(f).length}
         onFechar={() => setFiltrosAbertos(false)} onAplicar={f => { setFiltros(f); setFiltrosAbertos(false); }} />}

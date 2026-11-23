@@ -2,8 +2,7 @@ import Icone, { IC } from './Icone';
 import useEsc from '../hooks/useEsc';
 
 // Menu lateral em seções, como no app do Inatel
-export default function Menu({ aluno, novas, telaAtual, onFechar, onNavegar, onReiniciar }) {
-  useEsc(onFechar);
+export function MenuConteudo({ aluno, novas, telaAtual, onNavegar, onReiniciar }) {
   const secoes = [
     { itens: [{ rotulo: 'Avisos', icone: IC.sino, tela: 'inicio' }] },
     { titulo: 'Estágios', itens: [
@@ -27,26 +26,37 @@ export default function Menu({ aluno, novas, telaAtual, onFechar, onNavegar, onR
     ] },
   ];
   return (
+    <>
+      <div className="gaveta-user">
+        <span className="avatar">CS</span>
+        <div><strong>{aluno.nomeCompleto}</strong><span>{aluno.curso}, {aluno.periodo}º período</span></div>
+      </div>
+      {secoes.map((sec, i) => (
+        <ul key={i} className="gaveta-secao" aria-label={sec.titulo || 'Principal'}>
+          {sec.titulo && <li><h2>{sec.titulo}</h2></li>}
+          {sec.itens.map(item => (
+            <li key={item.rotulo}>
+              <button className={'gaveta-item' + (item.tela && item.tela === telaAtual ? ' atual' : '')}
+                aria-current={item.tela && item.tela === telaAtual ? 'page' : undefined}
+                onClick={() => (item.acao ? item.acao() : onNavegar(item.tela))}>
+                <Icone d={item.icone} tamanho={22} /><span>{item.rotulo}</span>
+                {item.badge > 0 && <span className="badge" aria-label={`${item.badge} novas`}>{item.badge}</span>}
+              </button>
+            </li>
+          ))}
+        </ul>
+      ))}
+    </>
+  );
+}
+
+// No celular: gaveta que abre por cima da tela
+export default function Menu({ onFechar, ...props }) {
+  useEsc(onFechar);
+  return (
     <div className="overlay" onClick={onFechar}>
       <nav className="gaveta" aria-label="Menu principal" onClick={e => e.stopPropagation()}>
-        <div className="gaveta-user">
-          <span className="avatar">CS</span>
-          <div><strong>{aluno.nomeCompleto}</strong><span>{aluno.curso}, {aluno.periodo}º período</span></div>
-        </div>
-        {secoes.map((sec, i) => (
-          <ul key={i} className="gaveta-secao" aria-label={sec.titulo || 'Principal'}>
-            {sec.titulo && <li><h2>{sec.titulo}</h2></li>}
-            {sec.itens.map(item => (
-              <li key={item.rotulo}>
-                <button className={'gaveta-item' + (item.tela && item.tela === telaAtual ? ' atual' : '')}
-                  onClick={() => (item.acao ? item.acao() : onNavegar(item.tela))}>
-                  <Icone d={item.icone} tamanho={22} /><span>{item.rotulo}</span>
-                  {item.badge > 0 && <span className="badge" aria-label={`${item.badge} novas`}>{item.badge}</span>}
-                </button>
-              </li>
-            ))}
-          </ul>
-        ))}
+        <MenuConteudo {...props} />
       </nav>
     </div>
   );

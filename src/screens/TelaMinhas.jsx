@@ -19,19 +19,19 @@ export default function TelaMinhas({ abaInicial, candidaturas, salvas, vistas, a
       </div>
 
       {aba === 'candidaturas' && (candidaturas.length > 0
-        ? candidaturas.map(c => {
+        ? <div className="lista-vagas">{candidaturas.map(c => {
             const v = MURAL.buscar(c.vagaId);
             return <CandCard key={c.id} c={c} v={v} onAbrir={() => onAbrir(v.id)} onCancelar={() => onCancelar(c)} />;
-          })
+          })}</div>
         : <Vazio icone={IC.lista} titulo="Nenhuma candidatura ainda"
             texto="Quando você se candidatar a uma vaga, ela aparece aqui com o status atualizado."
             acao="Explorar o mural" onAcao={onMural} />)}
 
       {aba === 'salvas' && (vagasSalvas.length > 0
-        ? vagasSalvas.map(v => (
+        ? <div className="lista-vagas">{vagasSalvas.map(v => (
             <VagaCard key={v.id} vaga={v} aluno={aluno} salva enviada={temCandidatura(v.id)}
               nova={v.nova && !vistas.includes(v.id)} onAbrir={onAbrir} onSalvar={onSalvar} />
-          ))
+          ))}</div>
         : <Vazio icone={IC.bookmark} titulo="Nenhuma vaga salva"
             texto="Toque no marcador de uma vaga para guardá-la. Avisamos você quando o prazo estiver acabando."
             acao="Explorar o mural" onAcao={onMural} />)}

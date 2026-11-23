@@ -32,10 +32,14 @@ export default function TelaMural({ filtros, setFiltros, resultado, aluno, salva
       <p className="resultado" aria-live="polite">
         {resultado.length} {resultado.length === 1 ? 'vaga encontrada' : 'vagas encontradas'}
       </p>
-      {resultado.length > 0 ? resultado.map(v => (
-        <VagaCard key={v.id} vaga={v} aluno={aluno} salva={salvas.includes(v.id)} enviada={temCandidatura(v.id)}
-          nova={v.nova && !vistas.includes(v.id)} onAbrir={onAbrir} onSalvar={onSalvar} />
-      )) : (
+      {resultado.length > 0 ? (
+        <div className="lista-vagas">
+          {resultado.map(v => (
+            <VagaCard key={v.id} vaga={v} aluno={aluno} salva={salvas.includes(v.id)} enviada={temCandidatura(v.id)}
+              nova={v.nova && !vistas.includes(v.id)} onAbrir={onAbrir} onSalvar={onSalvar} />
+          ))}
+        </div>
+      ) : (
         <Vazio icone={IC.busca} titulo="Nenhuma vaga com esses filtros"
           texto="Tente outro termo de busca ou remova algum filtro para ver mais vagas."
           acao="Limpar busca e filtros" onAcao={() => setFiltros(FILTROS_VAZIOS)} />
